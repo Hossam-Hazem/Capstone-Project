@@ -6,7 +6,7 @@
     android:baselineAligned="false"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
-    tools:context="com.example.pc.dishfinder.MainActivity">
+    tools:context=".MainActivity">
     <FrameLayout
         android:id="@+id/mainFragment"
         android:layout_width="0dp"

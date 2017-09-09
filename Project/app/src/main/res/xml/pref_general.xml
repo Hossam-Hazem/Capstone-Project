@@ -11,7 +11,7 @@
         <!--android:negativeButtonText="@null"-->
         <!--android:positiveButtonText="@null"-->
         <!--android:title="@string/pref_title_choose_sort" />-->
-    <com.example.pc.dishfinder.utils.NumberPickerPreference
+    <com.HossamHazem.DishFinder.utils.NumberPickerPreference
         android:key="@string/searchRadius"
         android:title="Search Radius (in Kilometers)"
         android:defaultValue="20" />

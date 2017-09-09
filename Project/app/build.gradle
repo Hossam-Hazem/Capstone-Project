@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.3'
 
     defaultConfig {
-        applicationId "com.example.pc.dishfinder"
+        applicationId "com.HossamHazem.DishFinder"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
