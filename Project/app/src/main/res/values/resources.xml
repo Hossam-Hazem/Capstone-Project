@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="isTablet">false</bool>
+    <string-array name="sortTypeLabels">
+        <item>Name</item>
+        <item>Rating</item>
+        <item>Distance</item>
+    </string-array>
+    <string-array name="sortTypeValues">
+        <item>NAME</item>
+        <item>RATING</item>
+        <item>DISTANCE</item>
+    </string-array>
+</resources>

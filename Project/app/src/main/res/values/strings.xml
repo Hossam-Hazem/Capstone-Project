@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">DishFinder</string>
+    <string name="opening_quote">“</string>
+    <string name="closing_quote">”</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="searchRadius">search_radius</string>
+    <string name="sortType">sort_type</string>
+    <string name="show_on_maps">Show on maps</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="nearby_places">Nearby places</string>
+    <string name="distance_away">away</string>
+    <string name="sortTypeTitle"> Sort by</string>
+    <string name="sortTypeDefault"> NAME</string>
+    <string name="rating_label">Rating</string>
+    <string name="phone_number_label">Phone number</string>
+    <string name="address_label">Address</string>
+    <string name="website_label">Website</string>
+    <string name="place_types_label">Place type(s)</string>
+    <string name="view_reviews_label">View Reviews</string>
+    <string name="content_description_imageView">Background image of the place</string>
+    <string name="backdrop_content_description">An image of the place</string>
+    <string name="place_title_content_description">place title</string>
+    <string name="favorite_button_content_description">favorite button</string>
+    <string name="no_reviews_available">No reviews available</string>
+    <string name="reviews_title">Reviews</string>
+    <string name="reviews_close_button">Close</string>
+    <string name="need_network_details">You need network to get complete place info</string>
+    <string name="need_network_main">You need network to search for places</string>
+</resources>

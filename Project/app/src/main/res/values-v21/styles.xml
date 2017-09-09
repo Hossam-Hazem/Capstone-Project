@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:background">#ff424242</item>
+        <item name="android:windowNoTitle">false</item>
+    </style>
+    <style name="SettingsTheme" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar">
+    </style>
+</resources>
