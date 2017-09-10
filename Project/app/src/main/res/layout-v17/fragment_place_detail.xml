@@ -38,8 +38,6 @@
                 android:paddingBottom="@dimen/detail_metabar_vert_padding"
                 android:paddingStart="@dimen/detail_inner_horiz_margin"
                 android:paddingEnd="@dimen/detail_inner_horiz_margin"
-                android:paddingStart="@dimen/detail_inner_horiz_margin"
-                android:paddingEnd="@dimen/detail_inner_horiz_margin"
                 android:paddingTop="@dimen/detail_metabar_vert_padding"
                 android:nextFocusDown="@+id/placeMapButton"
                 android:nextFocusRight="@+id/favorite_button">
@@ -98,8 +96,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/show_on_maps"
                     android:id="@+id/placeMapButton"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     android:paddingTop="24dp"
