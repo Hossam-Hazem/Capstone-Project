@@ -12,7 +12,7 @@ public class Review implements Serializable {
     String text;
     String time;
 
-    public Review(String authorName, double rating, String text,String time) {
+    public Review(String authorName, double rating, String text, String time) {
         this.authorName = authorName;
         this.rating = rating;
         this.text = text;
@@ -33,12 +33,11 @@ public class Review implements Serializable {
 
     public String getTime() {
         long timestamp = Long.parseLong(time) * 1000;
-        try{
+        try {
             DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             Date netDate = (new Date(timestamp));
             return sdf.format(netDate);
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             return "xx";
         }
     }

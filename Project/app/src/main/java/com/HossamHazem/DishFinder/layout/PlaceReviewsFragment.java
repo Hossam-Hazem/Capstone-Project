@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-
 import com.HossamHazem.DishFinder.R;
 import com.HossamHazem.DishFinder.utils.Review;
 
@@ -70,9 +69,9 @@ public class PlaceReviewsFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 })
-                .setAdapter(mReviewsAdapter,null);
-        AlertDialog dialog =  builder.create();
-        if(mReviewsAdapter.isEmpty()){
+                .setAdapter(mReviewsAdapter, null);
+        AlertDialog dialog = builder.create();
+        if (mReviewsAdapter.isEmpty()) {
             dialog.setMessage(getString(R.string.no_reviews_available));
         }
         ListView listView = dialog.getListView();
@@ -81,16 +80,17 @@ public class PlaceReviewsFragment extends DialogFragment {
         return dialog;
     }
 
-    private int getDividerValue(int dp){
+    private int getDividerValue(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
+
     public class ReviewsAdapter extends BaseAdapter {
 
         ArrayList<Review> reviews;
         Context mContext;
 
-        public ReviewsAdapter(Context c){
+        public ReviewsAdapter(Context c) {
             reviews = new ArrayList<>();
             mContext = c;
         }
@@ -110,22 +110,23 @@ public class PlaceReviewsFragment extends DialogFragment {
             return position;
         }
 
-        public void add(Review item){
+        public void add(Review item) {
             reviews.add(item);
             super.notifyDataSetChanged();
         }
 
-        public void addAll(ArrayList<Review> reviewsList){
-            if(reviews == null || reviewsList == null)
+        public void addAll(ArrayList<Review> reviewsList) {
+            if (reviews == null || reviewsList == null)
                 return;
             reviews.addAll(reviewsList);
             super.notifyDataSetChanged();
         }
 
-        public void clear(){
+        public void clear() {
             reviews.clear();
             super.notifyDataSetChanged();
         }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView authorTextView;
@@ -134,11 +135,10 @@ public class PlaceReviewsFragment extends DialogFragment {
             RatingBar ratingBar;
             View view;
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            if(convertView == null){
-                view = inflater.inflate(R.layout.list_item_reviews,parent,false);
+            if (convertView == null) {
+                view = inflater.inflate(R.layout.list_item_reviews, parent, false);
 
-            }
-            else{
+            } else {
                 view = convertView;
             }
             authorTextView = (TextView) view.findViewById(R.id.list_item_reviews_author);
@@ -149,7 +149,7 @@ public class PlaceReviewsFragment extends DialogFragment {
             contentTextView.setText(review.getText());
             authorTextView.setText(review.getAuthorName());
             timeTextView.setText(review.getTime());
-            ratingBar.setRating((float)review.getRating());
+            ratingBar.setRating((float) review.getRating());
 
             return view;
         }

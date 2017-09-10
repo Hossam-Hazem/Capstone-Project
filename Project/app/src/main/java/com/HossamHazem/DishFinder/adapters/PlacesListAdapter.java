@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.HossamHazem.DishFinder.R;
+import com.HossamHazem.DishFinder.layout.PlaceListFragment;
 import com.HossamHazem.DishFinder.utils.PaletteUtils;
 import com.HossamHazem.DishFinder.utils.Place;
-
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -24,13 +24,12 @@ import java.util.Comparator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.HossamHazem.DishFinder.layout.PlaceListFragment;
 
 /**
  * Created by Hossam on 9/2/2017.
  */
 
-public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.PlaceViewHolder>{
+public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.PlaceViewHolder> {
     ArrayList<Place> places;
     Context mContext;
     Place.SortType sortType;
@@ -55,7 +54,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Pl
         holder.mainView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              ((PlaceListFragment.TwoPaneInterface) mContext).listItemClickCallback(item);
+                ((PlaceListFragment.TwoPaneInterface) mContext).listItemClickCallback(item);
             }
         });
     }
@@ -65,64 +64,69 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Pl
         return places.size();
     }
 
-    public void add(Place place){
+    public void add(Place place) {
         places.add(place);
         onNotifyDataSetChanged();
     }
 
-    public void addAll(Collection<Place> places){
+    public void addAll(Collection<Place> places) {
         this.places.addAll(places);
         onNotifyDataSetChanged();
     }
 
-    public void replace(ArrayList<Place> places){
+    public void replace(ArrayList<Place> places) {
         this.places = places;
         onNotifyDataSetChanged();
     }
 
-    public void remove(Place place){
+    public void remove(Place place) {
         places.remove(place);
         onNotifyDataSetChanged();
     }
 
-    public void onNotifyDataSetChanged(){
+    public void onNotifyDataSetChanged() {
         sort();
         notifyDataSetChanged();
     }
 
-    public void changeSortType(Place.SortType sortType){
+    public void changeSortType(Place.SortType sortType) {
         this.sortType = sortType;
         sort();
         notifyDataSetChanged();
     }
 
-    private void sort(){
+    private void sort() {
         Comparator<Place> comparator;
-        switch(sortType){
-            case NAME: comparator = Place.getNameComparator(); break;
+        switch (sortType) {
+            case NAME:
+                comparator = Place.getNameComparator();
+                break;
             case DISTANCE: {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
                 long updatedAt = prefs.getLong("locationUpdatedAt", 0);
                 float latitude = 0;
                 float longitude = 0;
-                if( updatedAt != 0) {
+                if (updatedAt != 0) {
                     latitude = prefs.getFloat("lastLatitude", 0);
                     longitude = prefs.getFloat("lastLongitude", 0);
                 }
                 comparator = Place.getDistanceComparator(latitude, longitude);
                 break;
             }
-            case RATING: comparator = Place.getRatingComparator(); break;
-            default: comparator = null;
+            case RATING:
+                comparator = Place.getRatingComparator();
+                break;
+            default:
+                comparator = null;
         }
         Collections.sort(places, comparator);
     }
 
-    public Place get(int position){
+    public Place get(int position) {
         return places.get(position);
     }
 
-    class PlaceViewHolder extends RecyclerView.ViewHolder{
+    class PlaceViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.itemTextHolder)
         View layout;
 
@@ -147,7 +151,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Pl
 
             String imageUrl = place.getLogoImageURL();
 
-            if(imageUrl != null) {
+            if (imageUrl != null) {
                 Picasso.with(mContext).load(imageUrl).fit().centerCrop().into(selectPlaceImage, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -159,8 +163,7 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Pl
 
                     }
                 });
-            }
-            else {
+            } else {
                 Picasso.with(mContext).load(Place.getPlaceHolderImage()).fit().centerCrop().into(selectPlaceImage, new Callback() {
                     @Override
                     public void onSuccess() {

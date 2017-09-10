@@ -27,7 +27,7 @@ public class PlaceImageFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog d =  super.onCreateDialog(savedInstanceState);
+        Dialog d = super.onCreateDialog(savedInstanceState);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return d;
     }
@@ -36,7 +36,7 @@ public class PlaceImageFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_place_image, container, false);
+        View view = inflater.inflate(R.layout.fragment_place_image, container, false);
         String uri = getArguments().getString("uri");
         ImageView imageView = ((ImageView) view.findViewById(R.id.place_image_view));
         Picasso.with(getContext()).load(uri).into(imageView);

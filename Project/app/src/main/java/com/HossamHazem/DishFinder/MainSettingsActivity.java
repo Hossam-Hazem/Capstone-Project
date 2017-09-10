@@ -40,7 +40,7 @@ public class MainSettingsActivity extends PreferenceActivity
 
         // Trigger the listener immediately with the preference's
         // current value.
-        if(preference.getKey().equals(getString(R.string.searchRadius))) {
+        if (preference.getKey().equals(getString(R.string.searchRadius))) {
             onPreferenceChange(preference,
                     PreferenceManager
                             .getDefaultSharedPreferences(preference.getContext())
@@ -48,14 +48,13 @@ public class MainSettingsActivity extends PreferenceActivity
             return;
 
         }
-        if(preference.getKey().equals(getString(R.string.sortType))){
+        if (preference.getKey().equals(getString(R.string.sortType))) {
             onPreferenceChange(preference,
                     PreferenceManager
                             .getDefaultSharedPreferences(preference.getContext())
                             .getString(preference.getKey(), "NAME"));
             return;
         }
-
 
 
     }

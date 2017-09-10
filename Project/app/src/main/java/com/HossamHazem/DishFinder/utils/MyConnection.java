@@ -11,7 +11,8 @@ import java.net.URL;
 
 public class MyConnection {
     final static String LOG_TAG = MyConnection.class.getSimpleName();
-    public static String connect(String uriString){
+
+    public static String connect(String uriString) {
         String resultJSONString;
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -27,8 +28,7 @@ public class MyConnection {
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
             inputStream = urlConnection.getInputStream();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             if (urlConnection != null) {
                 // urlConnection.disconnect();
@@ -54,8 +54,7 @@ public class MyConnection {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             if (reader != null) {
                 try {
                     reader.close();

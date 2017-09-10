@@ -4,4 +4,4 @@
     android:layout_height="match_parent"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:id="@+id/grid_item_place_imageView"
-    android:scaleType="fitXY"/>
+    android:scaleType="fitXY" />

@@ -8,6 +8,7 @@
     </style>
 
     <style name="favoriteButton" parent="AppTheme" />
+
     <style name="unFavoriteButton" parent="AppTheme">
 
 
@@ -24,7 +25,7 @@
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog" />
 
-    <style name="SettingsTheme" parent="AppTheme"/>
+    <style name="SettingsTheme" parent="AppTheme" />
 
     <style name="CustomDialog" parent="AppTheme.Dialog">
         <item name="android:background">#000</item>

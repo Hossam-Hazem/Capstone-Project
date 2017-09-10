@@ -6,7 +6,7 @@ import android.location.Location;
 import android.net.Uri;
 
 import com.HossamHazem.DishFinder.R;
-import com.HossamHazem.DishFinder.config.MyConfig;
+import com.HossamHazem.DishFinder.config.Constants;
 import com.HossamHazem.DishFinder.database.PlaceContract;
 
 import java.io.Serializable;
@@ -32,6 +32,7 @@ public class Place implements Serializable {
     private String logoId;
 
     private final String PHOTO_BASE_URL = "https://maps.googleapis.com/maps/api/place/photo";
+
     public Place(String id, String name, boolean isOpen, String rating, String lat, String lng, String phoneNumber, String address, String website, ArrayList<String> type, ArrayList<String> photoIds, ArrayList<Review> reviews) {
         this.id = id;
         this.name = name;
@@ -57,7 +58,7 @@ public class Place implements Serializable {
         this.lng = lng;
         this.type = type;
         this.PhotoIds = photoIds;
-        this.logoId = !photoIds.isEmpty()? photoIds.get(0) : null;
+        this.logoId = !photoIds.isEmpty() ? photoIds.get(0) : null;
     }
 
     public Place(String id, String name, String lat, String lng, String phoneNumber, String address, String rating, String website) {
@@ -70,6 +71,7 @@ public class Place implements Serializable {
         this.rating = rating;
         this.website = website;
     }
+
     public Place(String id, String name, String lat, String lng, String phoneNumber, String address, String rating, String website, String logo) {
         this.id = id;
         this.name = name;
@@ -82,14 +84,14 @@ public class Place implements Serializable {
         this.logoId = logo;
     }
 
-    public void setAdditionalInfo(String phoneNumber, String address, String website, ArrayList<Review> reviews, ArrayList<String> photosId, ArrayList<String> types){
+    public void setAdditionalInfo(String phoneNumber, String address, String website, ArrayList<Review> reviews, ArrayList<String> photosId, ArrayList<String> types) {
         this.address = address;
         this.website = website;
         this.phoneNumber = phoneNumber;
         this.reviews = reviews;
         this.PhotoIds = photosId;
         this.type = types;
-        this.logoId = !photosId.isEmpty()? photosId.get(0) : null;
+        this.logoId = !photosId.isEmpty() ? photosId.get(0) : null;
     }
 
     public String getName() {
@@ -120,7 +122,7 @@ public class Place implements Serializable {
         return lng;
     }
 
-    public String getLoc(){
+    public String getLoc() {
         //TODO
         return null;
     }
@@ -141,19 +143,19 @@ public class Place implements Serializable {
         return type;
     }
 
-    public ArrayList<Review> getReviews(){
+    public ArrayList<Review> getReviews() {
         return reviews;
     }
 
-    public String getTypeString(){
-        if(type == null)
+    public String getTypeString() {
+        if (type == null)
             return null;
         Iterator<String> i = type.iterator();
         String result = "";
-        if(i.hasNext())
+        if (i.hasNext())
             result += i.next();
-        while(i.hasNext()){
-            result += ", "+i.next();
+        while (i.hasNext()) {
+            result += ", " + i.next();
         }
         return result;
     }
@@ -162,27 +164,27 @@ public class Place implements Serializable {
         return logoId != null ? logoId : "";
     }
 
-    public String getLogoImageURL(){
-        if(logoId != null && !logoId.isEmpty()) {
+    public String getLogoImageURL() {
+        if (logoId != null && !logoId.isEmpty()) {
             return getImage("400", null, logoId);
         }
         return null;
     }
 
-    public static int getPlaceHolderImage(){
+    public static int getPlaceHolderImage() {
         return R.drawable.image_not_available;
     }
 
 
     public String getDefaultImageURL() {
-        if(PhotoIds!= null && !PhotoIds.isEmpty()) {
-            return getImage("1700",null,getPhotoIds().get(0));
+        if (PhotoIds != null && !PhotoIds.isEmpty()) {
+            return getImage("1700", null, getPhotoIds().get(0));
         }
         return null;
     }
 
-    public String getImage(String maxWidth,String maxHeight, String ref){
-        final String API_KEY = MyConfig.GOOGLE_PLACES_API_KEY;
+    public String getImage(String maxWidth, String maxHeight, String ref) {
+        final String API_KEY = Constants.GOOGLE_PLACES_API_KEY;
         final String API_PARAM = "key";
         final String MAX_WIDTH_PARAM = "maxwidth";
         final String PHOTO_REFERENCE_PARAM = "photoreference";
@@ -190,24 +192,25 @@ public class Place implements Serializable {
         Uri.Builder uriBuilder = Uri.parse(PHOTO_BASE_URL).buildUpon()
                 .appendQueryParameter(API_PARAM, API_KEY)
                 .appendQueryParameter(PHOTO_REFERENCE_PARAM, ref);
-        if(maxWidth != null)
+        if (maxWidth != null)
             uriBuilder.appendQueryParameter(MAX_WIDTH_PARAM, maxWidth);
-        if(maxHeight != null)
+        if (maxHeight != null)
             uriBuilder.appendQueryParameter(MAX_HEIGHT_PARAM, maxHeight);
         return uriBuilder.build().toString();
     }
 
-    public boolean isFavorite(Context context){
-        return PlaceContract.FavoriteEntry.checkPlaceExistsById(context,id);
+    public boolean isFavorite(Context context) {
+        return PlaceContract.FavoriteEntry.checkPlaceExistsById(context, id);
     }
 
-    public boolean setFavorite(Context context){
+    public boolean setFavorite(Context context) {
         return PlaceContract.FavoriteEntry.insert(
                 context,
                 this
         );
     }
-    public boolean removeFavorite(Context context){
+
+    public boolean removeFavorite(Context context) {
         return PlaceContract.FavoriteEntry.delete(
                 context,
                 this.id
@@ -263,55 +266,57 @@ public class Place implements Serializable {
     }
 
     //return distance in meters
-    public float getDistance(float lat, float lng){
+    public float getDistance(float lat, float lng) {
 
-        Location startPoint=new Location("locationA");
+        Location startPoint = new Location("locationA");
         startPoint.setLatitude(lat);
         startPoint.setLongitude(lng);
 
-        Location endPoint=new Location("locationA");
+        Location endPoint = new Location("locationA");
         endPoint.setLatitude(Float.parseFloat(this.lat));
         endPoint.setLongitude(Float.parseFloat(this.lng));
 
         return startPoint.distanceTo(endPoint);
     }
 
-    public String getDistanceFormatted(float lat, float lng){
+    public String getDistanceFormatted(float lat, float lng) {
         double distance = getDistance(lat, lng);
         String distanceFormatted;
-        if(distance < 100){
+        if (distance < 100) {
             NumberFormat formatter = new DecimalFormat("#0");
-            return formatter.format(distance)+" meters";
-        }
-        else{
-            distance = distance/1000;
+            return formatter.format(distance) + " meters";
+        } else {
+            distance = distance / 1000;
             NumberFormat formatter = new DecimalFormat("#0.00");
-            return formatter.format(distance)+" kms";
+            return formatter.format(distance) + " kms";
         }
     }
 
     public static Comparator getComparater(SortType sortType, float lat, float lng) {
-        switch (sortType){
-            case DISTANCE: return getDistanceComparator(lat, lng);
-            case NAME: return getNameComparator();
-            case RATING: return getRatingComparator();
+        switch (sortType) {
+            case DISTANCE:
+                return getDistanceComparator(lat, lng);
+            case NAME:
+                return getNameComparator();
+            case RATING:
+                return getRatingComparator();
         }
         return null;
     }
 
-    public enum SortType{
+    public enum SortType {
         NAME, DISTANCE, RATING
     }
 
-    public static DistanceComparator getDistanceComparator(float lat, float lng){
+    public static DistanceComparator getDistanceComparator(float lat, float lng) {
         return new DistanceComparator(lat, lng);
     }
 
-    public static NameComparator getNameComparator(){
+    public static NameComparator getNameComparator() {
         return new NameComparator();
     }
 
-    public static RatingComparator getRatingComparator(){
+    public static RatingComparator getRatingComparator() {
         return new RatingComparator();
     }
 
@@ -320,7 +325,7 @@ public class Place implements Serializable {
         private float lat;
         private float lng;
 
-        DistanceComparator(float lat, float lng){
+        DistanceComparator(float lat, float lng) {
             this.lat = lat;
             this.lng = lng;
         }

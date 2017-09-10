@@ -27,7 +27,7 @@ public class LocationGetter implements LocationListener {
     LocationCallback getLocationCallback;
     AppCompatActivity mContext;
 
-    public LocationGetter(AppCompatActivity context){
+    public LocationGetter(AppCompatActivity context) {
         mContext = context;
         mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 
@@ -51,26 +51,26 @@ public class LocationGetter implements LocationListener {
     }
 
     @SuppressWarnings({"MissingPermission"})
-    public void getGPSLocation(LocationCallback locationCallback){
-        if ( !mLocationManager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
- //           buildAlertMessageNoGps();
+    public void getGPSLocation(LocationCallback locationCallback) {
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            //           buildAlertMessageNoGps();
             System.out.println("error");
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             mContext.startActivity(intent);
         }
         Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (location == null || location.getTime() < Calendar.getInstance().getTimeInMillis() -  1000) {
+        if (location == null || location.getTime() < Calendar.getInstance().getTimeInMillis() - 1000) {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        }
-        else{
+        } else {
             getGpsLocationOnSuccess(location, locationCallback);
         }
     }
+
     private void getGpsLocationOnSuccess(Location location, LocationCallback locationCallback) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext()).edit();
-        long locationUpdatedAt =  System.currentTimeMillis()/1000;
-        editor.putFloat("lastLatitude", (float)location.getLatitude());
-        editor.putFloat("lastLongitude", (float)location.getLongitude());
+        long locationUpdatedAt = System.currentTimeMillis() / 1000;
+        editor.putFloat("lastLatitude", (float) location.getLatitude());
+        editor.putFloat("lastLongitude", (float) location.getLongitude());
         editor.putLong("locationUpdatedAt", locationUpdatedAt);
         editor.commit();
         locationCallback.onSuccess(mContext, location);
@@ -96,7 +96,7 @@ public class LocationGetter implements LocationListener {
 //    }
 
     public void requestLocation() {
-        if(Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= 23) {
             if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 mContext.requestPermissions(new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -104,17 +104,17 @@ public class LocationGetter implements LocationListener {
             } else {
                 locationPermissionCallback.onAccept();
             }
-        }
-        else {
+        } else {
             //TODO handle permission handling
             locationPermissionCallback.onAccept();
         }
     }
 
 
-
     // Required functions
-    public void onProviderDisabled(String arg0) {}
+    public void onProviderDisabled(String arg0) {
+    }
+
     public void onProviderEnabled(String arg0) {
         getGPSLocation(getLocationCallback);
     }
@@ -127,29 +127,33 @@ public class LocationGetter implements LocationListener {
             }
             mLocationManager.removeUpdates(this);
             getGpsLocationOnSuccess(location, getLocationCallback);
-        }
-        else {
+        } else {
             getLocationCallback.onFail();
         }
     }
 
-    public void onLocationPermissionAccepted(){
+    public void onLocationPermissionAccepted() {
         locationPermissionCallback.onAccept();
     }
 
-    public void onLocationPermissionRejected(){
+    public void onLocationPermissionRejected() {
         locationPermissionCallback.onReject();
     }
 
-    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {}
+    public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+    }
 
     public interface PermissionCallback {
         void onAccept();
+
         void onReject();
     }
-    public interface LocationCallback{
+
+    public interface LocationCallback {
         void onSuccess(Context context, Location location);
+
         void onFail();
+
         void onPermissionRejected();
     }
 }

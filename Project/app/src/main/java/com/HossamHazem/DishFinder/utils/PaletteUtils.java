@@ -16,7 +16,7 @@ import com.squareup.picasso.Target;
 
 public class PaletteUtils {
 
-    public static void setTitleBarColor(Bitmap bitmap,final View titleBar){
+    public static void setTitleBarColor(Bitmap bitmap, final View titleBar) {
         Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette p) {
@@ -26,14 +26,15 @@ public class PaletteUtils {
             }
         });
     }
-    public static void setTitleBarColor(ImageView imageView, View titleBar){
+
+    public static void setTitleBarColor(ImageView imageView, View titleBar) {
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         setTitleBarColor(bitmap, titleBar);
     }
 
-    public static Target getTargetCallback(final ImageView imageView, final View titleBar){
-        return new Target(){
+    public static Target getTargetCallback(final ImageView imageView, final View titleBar) {
+        return new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 imageView.setImageBitmap(bitmap);

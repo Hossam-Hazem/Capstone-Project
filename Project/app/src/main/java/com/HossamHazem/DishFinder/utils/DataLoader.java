@@ -1,7 +1,6 @@
 package com.HossamHazem.DishFinder.utils;
 
 
-
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 
-import com.HossamHazem.DishFinder.config.MyConfig;
+import com.HossamHazem.DishFinder.config.Constants;
 import com.HossamHazem.DishFinder.database.PlaceContract;
 
 import org.json.JSONArray;
@@ -24,16 +23,16 @@ import java.util.ArrayList;
  * Created by Hossam on 8/28/2017.
  */
 
-public class DataLoader implements Serializable{
+public class DataLoader implements Serializable {
 
     public static ArrayList<DataLoader> instances;
 
-    public static DataLoader getInstance(FragmentActivity activity){
-        if(instances == null){
+    public static DataLoader getInstance(FragmentActivity activity) {
+        if (instances == null) {
             instances = new ArrayList<>();
         }
-        for(DataLoader instance : instances){
-            if(instance.mContext.getClass().equals(activity.getClass())) {
+        for (DataLoader instance : instances) {
+            if (instance.mContext.getClass().equals(activity.getClass())) {
                 instance.mContext = activity;
                 return instance;
             }
@@ -55,8 +54,8 @@ public class DataLoader implements Serializable{
     ArrayList<Place> favoritePlaces;
 
     final static String BASEURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-    private static final int GET_ALL_PLACES_LOADER  = 11;
-    private static final int GET_FAVORITES_LOADER  = 12;
+    private static final int GET_ALL_PLACES_LOADER = 11;
+    private static final int GET_FAVORITES_LOADER = 12;
 
     private FragmentActivity mContext;
     private ApiLoaderFinishedCallback mApiLoaderFinishedCallback;
@@ -66,7 +65,7 @@ public class DataLoader implements Serializable{
             = new LoaderManager.LoaderCallbacks<String>() {
         @Override
         public Loader<String> onCreateLoader(int id, Bundle args) {
-            switch(id){
+            switch (id) {
                 case GET_ALL_PLACES_LOADER: {
                     final String location = args.getString("location");
                     final String radius = args.getString("radius");
@@ -86,7 +85,8 @@ public class DataLoader implements Serializable{
                         }
                     };
                 }
-                default: return null;
+                default:
+                    return null;
             }
 
         }
@@ -104,10 +104,10 @@ public class DataLoader implements Serializable{
         }
     };
     private LoaderManager.LoaderCallbacks<Cursor> databaseLoaderListener
-            = new LoaderManager.LoaderCallbacks<Cursor>(){
+            = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
-            switch(id){
+            switch (id) {
                 case GET_FAVORITES_LOADER: {
                     return new AsyncTaskLoader<Cursor>(mContext) {
                         @Override
@@ -146,58 +146,57 @@ public class DataLoader implements Serializable{
         }
     };
 
-    public DataLoader(FragmentActivity context){
+    public DataLoader(FragmentActivity context) {
         this.mContext = context;
     }
 
-    public void loadPlacesApi(Bundle args, ApiLoaderFinishedCallback apiLoaderFinishedCallback){
+    public void loadPlacesApi(Bundle args, ApiLoaderFinishedCallback apiLoaderFinishedCallback) {
         this.mApiLoaderFinishedCallback = apiLoaderFinishedCallback;
         LoaderManager loaderManager = mContext.getSupportLoaderManager();
         Loader<String> allPlacesLoader = loaderManager.getLoader(GET_ALL_PLACES_LOADER);
 
-        if(allPlacesLoader == null){
-            loaderManager.initLoader(GET_ALL_PLACES_LOADER, args,  apiLoaderListener);
+        if (allPlacesLoader == null) {
+            loaderManager.initLoader(GET_ALL_PLACES_LOADER, args, apiLoaderListener);
         }
     }
 
-    public void loadPlacesFavorites(DatabaseLoaderFinishedCallback databaseLoaderFinishedCallback){
+    public void loadPlacesFavorites(DatabaseLoaderFinishedCallback databaseLoaderFinishedCallback) {
         this.mDatabaseLoaderFinishedCallback = databaseLoaderFinishedCallback;
         LoaderManager loaderManager = mContext.getSupportLoaderManager();
         Loader<String> favoritePlacesLoader = loaderManager.getLoader(GET_FAVORITES_LOADER);
 
-        if(favoritePlacesLoader == null || favoritePlacesLoader.isReset()){
-            loaderManager.initLoader(GET_FAVORITES_LOADER, null,  databaseLoaderListener);
-        }
-        else{
-            loaderManager.restartLoader(GET_FAVORITES_LOADER, null,  databaseLoaderListener);
+        if (favoritePlacesLoader == null || favoritePlacesLoader.isReset()) {
+            loaderManager.initLoader(GET_FAVORITES_LOADER, null, databaseLoaderListener);
+        } else {
+            loaderManager.restartLoader(GET_FAVORITES_LOADER, null, databaseLoaderListener);
         }
     }
 
-    public static String getPlacesJsonFromWeb(String location, String radius){
-        final String API_KEY = MyConfig.GOOGLE_PLACES_API_KEY;
+    public static String getPlacesJsonFromWeb(String location, String radius) {
+        final String API_KEY = Constants.GOOGLE_PLACES_API_KEY;
         final String API_PARAM = "key";
         final String TYPE_PARAM = "types";
-        final String TYPE_DATA="bar|cafe|casino";
+        final String TYPE_DATA = "bar|cafe|casino";
         final String RADIUS_PARAM = "radius";
         final String LOCATION_PARAM = "location";
 
 
-        Uri uri =  Uri.parse(BASEURL).buildUpon()
-                .appendQueryParameter(API_PARAM,API_KEY)
-                .appendQueryParameter(TYPE_PARAM,TYPE_DATA)
-                .appendQueryParameter(RADIUS_PARAM,radius)
-                .appendQueryParameter(LOCATION_PARAM,location)
+        Uri uri = Uri.parse(BASEURL).buildUpon()
+                .appendQueryParameter(API_PARAM, API_KEY)
+                .appendQueryParameter(TYPE_PARAM, TYPE_DATA)
+                .appendQueryParameter(RADIUS_PARAM, radius)
+                .appendQueryParameter(LOCATION_PARAM, location)
                 .build();
 
         return MyConnection.connect(uri.toString());
     }
 
 
-    public static ArrayList<Place> getPlaceDataFromJson(String placesJSONStr){
+    public static ArrayList<Place> getPlaceDataFromJson(String placesJSONStr) {
         JSONArray placesJSON;
         ArrayList<Place> places = new ArrayList<>();
         try {
-            if(placesJSONStr != null) {
+            if (placesJSONStr != null) {
                 placesJSON = (new JSONObject(placesJSONStr)).getJSONArray("results");
                 int total;
                 total = placesJSON.length();
@@ -218,24 +217,23 @@ public class DataLoader implements Serializable{
 
                     placeId = placeJSON.getString("place_id");
                     placeName = placeJSON.getString("name");
-                    if(placeJSON.has("opening_hours") && placeJSON.getJSONObject("opening_hours").has("open_now")) {
+                    if (placeJSON.has("opening_hours") && placeJSON.getJSONObject("opening_hours").has("open_now")) {
                         placeIsOpen = placeJSON.getJSONObject("opening_hours").getBoolean("open_now");
-                    }
-                    else{
+                    } else {
                         placeIsOpen = null;
                     }
-                    placeRating = placeJSON.optString("rating","0");
-                    placeAddress = placeJSON.optString("vicinity","Not Available");
+                    placeRating = placeJSON.optString("rating", "0");
+                    placeAddress = placeJSON.optString("vicinity", "Not Available");
                     placeTypes = new ArrayList<>();
                     JSONArray placeTypesJSON = placeJSON.getJSONArray("types");
-                    for(int i = 0;i<placeTypesJSON.length();i++){
+                    for (int i = 0; i < placeTypesJSON.length(); i++) {
                         placeTypes.add(placeTypesJSON.getString(i));
                     }
                     JSONObject locationJSON = placeJSON.getJSONObject("geometry").getJSONObject("location");
                     placeLng = locationJSON.getString("lng");
                     placeLat = locationJSON.getString("lat");
                     placePictures = new ArrayList<>();
-                    if(placeJSON.has("photos")) {
+                    if (placeJSON.has("photos")) {
                         JSONArray placePicturesJSON = placeJSON.optJSONArray("photos");
                         for (int i = 0; i < placePicturesJSON.length(); i++) {
                             JSONObject photo = placePicturesJSON.getJSONObject(i);

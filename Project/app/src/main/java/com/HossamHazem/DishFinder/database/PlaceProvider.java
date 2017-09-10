@@ -24,9 +24,9 @@ public class PlaceProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         final SQLiteDatabase database = placeDbHelper.getWritableDatabase();
 
-        switch(match){
-            case FAVORITE:{
-                return database.delete(PlaceContract.FavoriteEntry.TABLE_NAME,selection,selectionArgs);
+        switch (match) {
+            case FAVORITE: {
+                return database.delete(PlaceContract.FavoriteEntry.TABLE_NAME, selection, selectionArgs);
             }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -53,10 +53,10 @@ public class PlaceProvider extends ContentProvider {
         final SQLiteDatabase database = placeDbHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         Uri returnUri;
-        switch(match){
-            case FAVORITE:{
-                long _id = database.insert(PlaceContract.FavoriteEntry.TABLE_NAME,null, values);
-                if(_id>-1)
+        switch (match) {
+            case FAVORITE: {
+                long _id = database.insert(PlaceContract.FavoriteEntry.TABLE_NAME, null, values);
+                if (_id > -1)
                     returnUri = PlaceContract.FavoriteEntry.buildFavoriteUri(_id);
                 else
                     throw new android.database.SQLException("failed to insert row");
@@ -65,7 +65,7 @@ public class PlaceProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uri,null);
+        getContext().getContentResolver().notifyChange(uri, null);
         database.close();
         return returnUri;
     }
@@ -80,9 +80,9 @@ public class PlaceProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         Cursor cursor;
-        switch (sUriMatcher.match(uri)){
+        switch (sUriMatcher.match(uri)) {
             case FAVORITE:
-                cursor =  placeDbHelper.getReadableDatabase().query(
+                cursor = placeDbHelper.getReadableDatabase().query(
                         PlaceContract.FavoriteEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -106,7 +106,7 @@ public class PlaceProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("QUeERY: unknown URI");
         }
-        cursor.setNotificationUri(getContext().getContentResolver(),uri);
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -117,11 +117,11 @@ public class PlaceProvider extends ContentProvider {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    static UriMatcher buildUriMatcher(){
+    static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = PlaceContract.CONTENT_AUTHORITY;
-        matcher.addURI(authority,PlaceContract.PATH_FAVORITE, FAVORITE);
-        matcher.addURI(authority,PlaceContract.PATH_FAVORITE+"/*",FAVORITE_ITEM);
+        matcher.addURI(authority, PlaceContract.PATH_FAVORITE, FAVORITE);
+        matcher.addURI(authority, PlaceContract.PATH_FAVORITE + "/*", FAVORITE_ITEM);
         return matcher;
     }
 }

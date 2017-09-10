@@ -51,28 +51,27 @@ public class HomeWidgetProvider extends AppWidgetProvider {
     }
 
 
-
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    private static void setTextView(Context context, RemoteViews views){
+    private static void setTextView(Context context, RemoteViews views) {
 //        CharSequence widgetText = "shrug";
 //        // Construct the RemoteViews object
 //
 //        views.setTextViewText(R.id.appwidget_text, widgetText);
 
-        Intent clickIntent=new Intent(context, MainActivity.class);
-        PendingIntent clickPI=PendingIntent
+        Intent clickIntent = new Intent(context, MainActivity.class);
+        PendingIntent clickPI = PendingIntent
                 .getActivity(context, 0,
                         clickIntent,
                         0);
         views.setOnClickPendingIntent(R.id.appwidget_text, clickPI);
     }
 
-    private static void setListView(Context context, RemoteViews widget, int appWidgetId){
-        Intent svcIntent=new Intent(context, HomeWidgetService.class);
+    private static void setListView(Context context, RemoteViews widget, int appWidgetId) {
+        Intent svcIntent = new Intent(context, HomeWidgetService.class);
 
         svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
@@ -80,8 +79,8 @@ public class HomeWidgetProvider extends AppWidgetProvider {
         widget.setRemoteAdapter(appWidgetId, R.id.widgetPlacesListView,
                 svcIntent);
 
-        Intent clickIntent=new Intent(context, PlaceDetailActivity.class);
-        PendingIntent clickPI=PendingIntent
+        Intent clickIntent = new Intent(context, PlaceDetailActivity.class);
+        PendingIntent clickPI = PendingIntent
                 .getActivity(context, 0,
                         clickIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
@@ -92,7 +91,7 @@ public class HomeWidgetProvider extends AppWidgetProvider {
 
     private static void setUpdateAtView(Context context, RemoteViews views) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        long yourmilliseconds = sharedPrefs.getLong("locationUpdatedAt", 0)*1000;
+        long yourmilliseconds = sharedPrefs.getLong("locationUpdatedAt", 0) * 1000;
         DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
 
         Date resultdate = new Date(yourmilliseconds);
@@ -106,7 +105,7 @@ public class HomeWidgetProvider extends AppWidgetProvider {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, HomeWidgetProvider.class));
 
-        if(intent.getAction().equals(UPDATE_ACTION)){
+        if (intent.getAction().equals(UPDATE_ACTION)) {
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widgetPlacesListView);
         }
 

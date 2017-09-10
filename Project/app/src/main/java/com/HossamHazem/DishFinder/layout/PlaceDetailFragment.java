@@ -25,11 +25,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.HossamHazem.DishFinder.MainActivity;
+import com.HossamHazem.DishFinder.PlaceDetailsConnector;
+import com.HossamHazem.DishFinder.PlaceParentActivity;
 import com.HossamHazem.DishFinder.R;
 import com.HossamHazem.DishFinder.utils.PaletteUtils;
 import com.HossamHazem.DishFinder.utils.Place;
-import com.HossamHazem.DishFinder.PlaceDetailsConnector;
-import com.HossamHazem.DishFinder.PlaceParentActivity;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -42,13 +42,14 @@ import butterknife.ButterKnife;
 
 import static com.HossamHazem.DishFinder.PlaceDetailActivity.PLACE_SERIALIZABLE_KEY;
 
-public class PlaceDetailFragment extends Fragment implements View.OnClickListener{
+public class PlaceDetailFragment extends Fragment implements View.OnClickListener {
     Place placeDetails;
     View fragmentView;
     boolean isFavorite;
     List<OnCreateViewCommand> onCreateViewCommands = new LinkedList<>();
 
-    @BindBool(R.bool.isTablet) boolean mTwoPane;
+    @BindBool(R.bool.isTablet)
+    boolean mTwoPane;
 
     @BindView(R.id.ratingBar)
     RatingBar mRatingBar;
@@ -115,7 +116,7 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
         fragmentView = inflater.inflate(R.layout.fragment_place_detail, container, false);
         ButterKnife.bind(this, fragmentView);
 
-        if(!((PlaceParentActivity) getActivity()).checkConnection()){
+        if (!((PlaceParentActivity) getActivity()).checkConnection()) {
             Snackbar.make(fragmentView, R.string.need_network_details, Snackbar.LENGTH_LONG).show();
         }
 
@@ -129,11 +130,11 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
             }
         }
         Place place = null;
-        if(getArguments() != null) {
+        if (getArguments() != null) {
             place = (Place) getArguments().getSerializable("placeDetails");
         }
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             place = (Place) savedInstanceState.getSerializable("place");
         }
 
@@ -144,7 +145,7 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
         mBackdrop.setOnClickListener(this);
         mMap.setOnClickListener(this);
 
-        for(OnCreateViewCommand command : onCreateViewCommands){
+        for (OnCreateViewCommand command : onCreateViewCommands) {
             command.run();
         }
 
@@ -157,10 +158,10 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
         outState.putSerializable("place", placeDetails);
     }
 
-    public void setPlaceDetails(Place place){
+    public void setPlaceDetails(Place place) {
 
-        if(place == null){
-            if(fragmentView != null) {
+        if (place == null) {
+            if (fragmentView != null) {
                 fragmentView.setVisibility(View.GONE);
             }
             return;
@@ -172,11 +173,10 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
         PlaceDetailsConnector connector = new PlaceDetailsConnector(placeDetails, new PlaceDetailsConnector.OnFinishCallback() {
             @Override
             public void onFinished() {
-                if(fragmentView != null) {
+                if (fragmentView != null) {
                     linkPlaceDetailsUI();
-                }
-                else{
-                    onCreateViewCommands.add(new OnCreateViewCommand(){
+                } else {
+                    onCreateViewCommands.add(new OnCreateViewCommand() {
                         @Override
                         public void run() {
                             linkPlaceDetailsUI();
@@ -213,7 +213,7 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
             }
             case R.id.placeMapButton: {
                 // Create a Uri from an intent string. Use the result to create an Intent.
-                Uri gmmIntentUri = Uri.parse("geo:"+placeDetails.getLat()+","+placeDetails.getLng()+"?z=19");
+                Uri gmmIntentUri = Uri.parse("geo:" + placeDetails.getLat() + "," + placeDetails.getLng() + "?z=19");
 
                 // Create an Intent from gmmIntentUri. Set the action to ACTION_VIEW
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -229,15 +229,15 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
     }
 
     private void setToolbar() {
-       // mMetaBar.setBackgroundColor(0x99777777);
+        // mMetaBar.setBackgroundColor(0x99777777);
         mPlaceTitle.setText(placeDetails.getName());
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext().getApplicationContext());
         long updatedAt = sharedPrefs.getLong("locationUpdatedAt", 0);
-        if( updatedAt != 0) {
+        if (updatedAt != 0) {
             float latitude = sharedPrefs.getFloat("lastLatitude", 0);
             float longitude = sharedPrefs.getFloat("lastLongitude", 0);
-            mPlaceDistance.setText(placeDetails.getDistanceFormatted(latitude, longitude)+" "+getString(R.string.distance_away));
+            mPlaceDistance.setText(placeDetails.getDistanceFormatted(latitude, longitude) + " " + getString(R.string.distance_away));
         }
 
         AppBarLayout appBarLayout = (AppBarLayout) fragmentView.findViewById(R.id.appbar);
@@ -282,7 +282,7 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
 
     private void loadBackdrop() {
         String imageUrl = placeDetails.getDefaultImageURL();
-        if(imageUrl != null) {
+        if (imageUrl != null) {
             Picasso.with(getContext()).load(imageUrl).fit().centerCrop().into(mBackdrop, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -294,8 +294,7 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
 
                 }
             });
-        }
-        else {
+        } else {
             Picasso.with(getContext()).load(Place.getPlaceHolderImage()).fit().centerCrop().into(mBackdrop, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -311,21 +310,22 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
     }
 
 
-    private void setPlacePhoneNumber(){
+    private void setPlacePhoneNumber() {
         mPhoneNumber.setText(placeDetails.getPhoneNumber());
     }
 
-    private void setPlaceAddress(){
+    private void setPlaceAddress() {
         mAddress.setText(placeDetails.getAddress());
     }
 
-    private void setPlaceWebsite(){
+    private void setPlaceWebsite() {
         mWebsite.setText(placeDetails.getWebsite());
     }
 
-    private void setPlaceType(){
+    private void setPlaceType() {
         mPlaceType.setText(placeDetails.getTypeString());
     }
+
     private void setFavButtonUnFavorite(View v) {
 
         mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_unfavorite));
@@ -408,7 +408,7 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
         return fragment;
     }
 
-    interface OnCreateViewCommand{
+    interface OnCreateViewCommand {
         void run();
     }
 

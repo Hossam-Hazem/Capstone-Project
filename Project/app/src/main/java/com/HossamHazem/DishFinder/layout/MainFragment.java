@@ -30,7 +30,7 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static MainFragment newInstance(ArrayList<Place> allPlaces, ArrayList<Place> favoritePlaces){
+    public static MainFragment newInstance(ArrayList<Place> allPlaces, ArrayList<Place> favoritePlaces) {
         MainFragment mainFragment = new MainFragment();
         mainFragment.allPlaces = allPlaces;
         mainFragment.favoritePlaces = favoritePlaces;
@@ -50,15 +50,15 @@ public class MainFragment extends Fragment {
         setRetainInstance(true);
 
         // Inflate the layout for this fragment
-        View fragmentView =  inflater.inflate(R.layout.fragment_main, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
 
         ViewPager viewPager = (ViewPager) fragmentView.findViewById(R.id.viewpager);
 
-        if(!((PlaceParentActivity) getActivity()).checkConnection()){
+        if (!((PlaceParentActivity) getActivity()).checkConnection()) {
             Snackbar.make(fragmentView, R.string.need_network_main, Snackbar.LENGTH_LONG).show();
         }
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             allPlacesFragment = PlaceListFragment.newInstance(getContext(), allPlaces);
             favoritesFragment = PlaceListFragment.newInstance(getContext(), favoritePlaces);
         }
@@ -67,7 +67,6 @@ public class MainFragment extends Fragment {
         setupViewPager(viewPager);
         TabLayout tabLayout = (TabLayout) fragmentView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
 
 
         return fragmentView;
@@ -88,23 +87,23 @@ public class MainFragment extends Fragment {
     }
 
     public void removeFavoriteFromAdapter(Place item) {
-        ((PlaceListFragment)tabAdapter.getItem(1)).removeItem(item);
+        ((PlaceListFragment) tabAdapter.getItem(1)).removeItem(item);
 
     }
 
     public void addFavoriteToAdapter(Place item) {
-        ((PlaceListFragment)tabAdapter.getItem(1)).addItem(item);
+        ((PlaceListFragment) tabAdapter.getItem(1)).addItem(item);
     }
 
-    public void notifyAllPlacesSetChanged(){
+    public void notifyAllPlacesSetChanged() {
         ((PlaceListFragment) tabAdapter.getItem(0)).notifyDataSetChanged();
     }
 
-    public void notifyFavoritesSetChanged(){
+    public void notifyFavoritesSetChanged() {
         ((PlaceListFragment) tabAdapter.getItem(1)).notifyDataSetChanged();
     }
 
-    public void reloadLists(ArrayList<Place> allPlaces, ArrayList<Place> favoritePlaces){
+    public void reloadLists(ArrayList<Place> allPlaces, ArrayList<Place> favoritePlaces) {
         this.allPlaces = allPlaces;
         ((PlaceListFragment) tabAdapter.getItem(0)).reloadList(allPlaces);
         this.favoritePlaces = favoritePlaces;
@@ -130,7 +129,6 @@ public class MainFragment extends Fragment {
         }
 
 
-
         @Override
         public int getCount() {
             return mFragments.size();
@@ -141,7 +139,6 @@ public class MainFragment extends Fragment {
             return mFragmentTitles.get(position);
         }
     }
-
 
 
 }

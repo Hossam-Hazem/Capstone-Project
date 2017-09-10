@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.HossamHazem.DishFinder.R;
-import com.HossamHazem.DishFinder.utils.Place;
 import com.HossamHazem.DishFinder.adapters.PlacesListAdapter;
+import com.HossamHazem.DishFinder.utils.Place;
 
 import java.util.ArrayList;
 
@@ -30,8 +30,10 @@ public class PlaceListFragment extends Fragment {
         public void onFinished();
     }
 
-    @BindView(R.id.placesRecyclerView) RecyclerView mRecyclerView;
-    @BindBool(R.bool.isTablet) boolean mTwoPane;
+    @BindView(R.id.placesRecyclerView)
+    RecyclerView mRecyclerView;
+    @BindBool(R.bool.isTablet)
+    boolean mTwoPane;
 
     private PlacesListAdapter mAdapter;
     protected OnFinishAdapterEmpty onFinishAdapterEmpty;
@@ -40,12 +42,11 @@ public class PlaceListFragment extends Fragment {
     private Place.SortType sortType;
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_place_all, container, false);
+        View view = inflater.inflate(R.layout.fragment_place_all, container, false);
 
         setRetainInstance(true);
 
@@ -53,10 +54,9 @@ public class PlaceListFragment extends Fragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-        if(mTwoPane){
+        if (mTwoPane) {
             mLayoutManager = new LinearLayoutManager(getActivity());
-        }
-        else{
+        } else {
             mLayoutManager = new GridLayoutManager(getActivity(), 2);
         }
 
@@ -65,13 +65,14 @@ public class PlaceListFragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("places", places);
     }
 
-    public static PlaceListFragment newInstance(Context mContext, ArrayList<Place> places){
+    public static PlaceListFragment newInstance(Context mContext, ArrayList<Place> places) {
         PlaceListFragment placeListFragment = new PlaceListFragment();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
@@ -89,7 +90,7 @@ public class PlaceListFragment extends Fragment {
 
     }
 
-    public void reloadList(ArrayList<Place> places){
+    public void reloadList(ArrayList<Place> places) {
         this.places = places;
         mAdapter.replace(places);
     }
@@ -100,13 +101,13 @@ public class PlaceListFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext().getApplicationContext());
         String sortTypeString = prefs.getString(getString(R.string.sortType), "NAME");
         Place.SortType sortType = Place.SortType.valueOf(sortTypeString);
-        if(this.sortType != sortType){
+        if (this.sortType != sortType) {
             mAdapter.changeSortType(sortType);
             this.sortType = sortType;
         }
     }
 
-    public void onCreateViewInit(View fragmentView){
+    public void onCreateViewInit(View fragmentView) {
 //        gridView.setOnItemClickListener( new AdapterView.OnItemClickListener(){
 //            @Override
 //            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -132,15 +133,15 @@ public class PlaceListFragment extends Fragment {
         };
     }
 
-    public void notifyDataSetChanged(){
+    public void notifyDataSetChanged() {
         mAdapter.onNotifyDataSetChanged();
     }
 
-    public void addItem(Place place){
+    public void addItem(Place place) {
         mAdapter.add(place);
     }
 
-    public  void removeItem(Place place){
+    public void removeItem(Place place) {
         mAdapter.remove(place);
     }
 

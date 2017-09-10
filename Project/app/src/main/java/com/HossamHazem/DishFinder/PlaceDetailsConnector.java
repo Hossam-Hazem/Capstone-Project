@@ -5,10 +5,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
+import com.HossamHazem.DishFinder.config.Constants;
 import com.HossamHazem.DishFinder.utils.MyConnection;
 import com.HossamHazem.DishFinder.utils.Place;
 import com.HossamHazem.DishFinder.utils.Review;
-import com.HossamHazem.DishFinder.config.MyConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,14 +17,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class PlaceDetailsConnector extends AsyncTask<Void, Void, Void> {
-    public interface OnFinishCallback{
+    public interface OnFinishCallback {
         void onFinished();
     }
+
     final String BASEURL = "https://maps.googleapis.com/maps/api/place/details/json";
     Place place;
     OnFinishCallback onFinishCallback;
 
-    public PlaceDetailsConnector( Place place,OnFinishCallback onFinishCallback) {
+    public PlaceDetailsConnector(Place place, OnFinishCallback onFinishCallback) {
         this.place = place;
         this.onFinishCallback = onFinishCallback;
     }
@@ -36,7 +37,7 @@ public class PlaceDetailsConnector extends AsyncTask<Void, Void, Void> {
     }
 
     public void getPlaceDetails() {
-        final String API_KEY = MyConfig.GOOGLE_PLACES_API_KEY;
+        final String API_KEY = Constants.GOOGLE_PLACES_API_KEY;
         final String API_PARAM = "key";
         final String PLACE_ID_PARAM = "placeid";
         final String PLACE_ID_DATA = place.getId();
@@ -79,11 +80,11 @@ public class PlaceDetailsConnector extends AsyncTask<Void, Void, Void> {
                     JSONArray placePicturesJSON = placeJSON.optJSONArray("reviews");
                     for (int i = 0; i < placePicturesJSON.length(); i++) {
                         JSONObject review = placePicturesJSON.getJSONObject(i);
-                        String authorName = review.optString("author_name","");
-                        double rating = review.optDouble("rating",-1);
-                        String text = review.optString("text","");
-                        String time = review.optString("time","");
-                        reviews.add(new Review(authorName,rating,text,time));
+                        String authorName = review.optString("author_name", "");
+                        double rating = review.optDouble("rating", -1);
+                        String text = review.optString("text", "");
+                        String time = review.optString("time", "");
+                        reviews.add(new Review(authorName, rating, text, time));
                     }
                 }
                 if (placeJSON.has("photos")) {
@@ -93,14 +94,14 @@ public class PlaceDetailsConnector extends AsyncTask<Void, Void, Void> {
                         placePictures.add(photo.getString("photo_reference"));
                     }
                 }
-                if(placeJSON.has("types")) {
+                if (placeJSON.has("types")) {
                     JSONArray placeTypesJSON = placeJSON.optJSONArray(("types"));
                     for (int i = 0; i < placeTypesJSON.length(); i++) {
                         types.add(placeTypesJSON.getString(i));
                     }
                 }
 
-                place.setAdditionalInfo(phoneNumber,address,website,reviews,placePictures,types);
+                place.setAdditionalInfo(phoneNumber, address, website, reviews, placePictures, types);
 
             }
 

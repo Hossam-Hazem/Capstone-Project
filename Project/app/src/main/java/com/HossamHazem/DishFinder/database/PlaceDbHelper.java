@@ -4,7 +4,9 @@ package com.HossamHazem.DishFinder.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.HossamHazem.DishFinder.database.PlaceContract.FavoriteEntry;
+
 public class PlaceDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
 
@@ -21,7 +23,7 @@ public class PlaceDbHelper extends SQLiteOpenHelper {
         // location setting, the city name, and the latitude and longitude
         final String SQL_CREATE_PLACE_TABLE = "CREATE TABLE " + FavoriteEntry.TABLE_NAME + " (" +
                 FavoriteEntry._ID + " INTEGER PRIMARY KEY," +
-                FavoriteEntry.COLUMN_FAVORITE_ID+" TEXT UNIQUE NOT NULL, " +
+                FavoriteEntry.COLUMN_FAVORITE_ID + " TEXT UNIQUE NOT NULL, " +
                 FavoriteEntry.COLUMN_FAVORITE_NAME + " TEXT UNIQUE NOT NULL, " +
                 FavoriteEntry.COLUMN_FAVORITE_PHONE_NUMBER + " TEXT NOT NULL, " +
                 FavoriteEntry.COLUMN_FAVORITE_RATING + " TEXT NOT NULL, " +

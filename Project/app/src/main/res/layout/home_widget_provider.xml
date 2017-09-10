@@ -21,19 +21,17 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/appwidget_updatedAt"
-        android:layout_below="@id/appwidget_text">
-    </ListView>
+        android:layout_below="@id/appwidget_text"></ListView>
 
     <TextView
         android:id="@+id/appwidget_updatedAt"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/appwidget_text"
         android:textColor="#ffffff"
         android:textSize="12sp"
         android:textStyle="bold|italic"
         android:gravity="end"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

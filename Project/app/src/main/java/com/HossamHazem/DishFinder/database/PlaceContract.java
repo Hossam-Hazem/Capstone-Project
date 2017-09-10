@@ -73,11 +73,11 @@ public class PlaceContract {
             placeValues.put(COLUMN_FAVORITE_NAME, place.getName());
             placeValues.put(COLUMN_FAVORITE_PHONE_NUMBER, place.getPhoneNumber());
             placeValues.put(COLUMN_FAVORITE_ADDRESS, place.getAddress());
-            placeValues.put(COLUMN_FAVORITE_LAT,place.getLat());
-            placeValues.put(COLUMN_FAVORITE_LNG,place.getLng());
-            placeValues.put(COLUMN_FAVORITE_RATING,place.getRating());
-            placeValues.put(COLUMN_FAVORITE_WEBSITE,place.getWebsite());
-            placeValues.put(COLUMN_FAVORITE_LOGO,place.getLogo());
+            placeValues.put(COLUMN_FAVORITE_LAT, place.getLat());
+            placeValues.put(COLUMN_FAVORITE_LNG, place.getLng());
+            placeValues.put(COLUMN_FAVORITE_RATING, place.getRating());
+            placeValues.put(COLUMN_FAVORITE_WEBSITE, place.getWebsite());
+            placeValues.put(COLUMN_FAVORITE_LOGO, place.getLogo());
             Uri insertedUri = context.getContentResolver().insert(
                     CONTENT_URI,
                     placeValues
@@ -124,7 +124,7 @@ public class PlaceContract {
             return getFavoritesFromCursor(cursor);
         }
 
-        public static ArrayList<Place> getFavoritesFromCursor(Cursor cursor){
+        public static ArrayList<Place> getFavoritesFromCursor(Cursor cursor) {
             ArrayList<Place> result = new ArrayList<>();
             while (cursor.moveToNext()) {
 

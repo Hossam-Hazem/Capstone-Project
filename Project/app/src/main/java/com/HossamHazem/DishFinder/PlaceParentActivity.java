@@ -16,11 +16,11 @@ import com.HossamHazem.DishFinder.layout.PlaceReviewsFragment;
 public abstract class PlaceParentActivity extends AppCompatActivity {
 
 
-
     public void openReviewsFragment(Bundle bundle) {
         showDialog(PlaceReviewsFragment.newInstance(), bundle);
     }
-//
+
+    //
 //    public void openTrailersFragment(Bundle bundle) {
 //        showDialog(MovieTrailersFragment.newInstance(), bundle);
 //    }

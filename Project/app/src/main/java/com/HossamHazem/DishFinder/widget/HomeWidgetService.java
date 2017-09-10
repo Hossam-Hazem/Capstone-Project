@@ -22,13 +22,13 @@ public class HomeWidgetService extends RemoteViewsService {
     }
 
 
-
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
     }
 }
-class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
+
+class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
     ArrayList<Place> places;
@@ -36,7 +36,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
     private float mLatitude;
     private float mLongitude;
 
-    public ListRemoteViewsFactory(Context applicationContext, Intent dataIntent){
+    public ListRemoteViewsFactory(Context applicationContext, Intent dataIntent) {
         this.mContext = applicationContext;
 
         this.places = new ArrayList<>();
@@ -44,7 +44,6 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
         mAppWidgetId = dataIntent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
     }
-
 
 
     @Override
@@ -59,12 +58,12 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
         long updatedAt = sharedPrefs.getLong("locationUpdatedAt", 0);
-        if( updatedAt != 0) {
+        if (updatedAt != 0) {
             mLatitude = sharedPrefs.getFloat("lastLatitude", 0);
             mLongitude = sharedPrefs.getFloat("lastLongitude", 0);
             String locationString = mLatitude + "," + mLongitude;
             //String searchRadius = prefs.getInt(getString(R.string.searchRadius), 1000)+"";
-            String searchRadius = 1000+"";
+            String searchRadius = 1000 + "";
             places = DataLoader.getPlaceDataFromJson(DataLoader.getPlacesJsonFromWeb(locationString, searchRadius));
             Collections.sort(places, Place.getDistanceComparator(mLatitude, mLongitude));
         }
@@ -76,10 +75,9 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
     }
 
 
-
     @Override
     public int getCount() {
-        if(places == null)
+        if (places == null)
             return 0;
         return places.size();
     }
@@ -94,8 +92,8 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory{
         remoteViews.setTextViewText(R.id.home_widget_provider_item_placeName, name);
         remoteViews.setTextViewText(R.id.home_widget_provider_item_distance, distance);
 
-        Intent i=new Intent();
-        Bundle extras=new Bundle();
+        Intent i = new Intent();
+        Bundle extras = new Bundle();
         extras.putSerializable(PlaceDetailActivity.PLACE_SERIALIZABLE_KEY, place);
         i.putExtras(extras);
         remoteViews.setOnClickFillInIntent(R.id.home_widget_provider_item_placeName, i);

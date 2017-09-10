@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -11,6 +12,6 @@
         <item name="android:background">#ff424242</item>
         <item name="android:windowNoTitle">false</item>
     </style>
-    <style name="SettingsTheme" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar">
-    </style>
+
+    <style name="SettingsTheme" parent="@android:style/ThemeOverlay.Material.Dark.ActionBar"></style>
 </resources>

@@ -13,19 +13,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.HossamHazem.DishFinder.layout.MainFragment;
+import com.HossamHazem.DishFinder.layout.PlaceDetailFragment;
+import com.HossamHazem.DishFinder.layout.PlaceListFragment;
+import com.HossamHazem.DishFinder.utils.DataLoader;
 import com.HossamHazem.DishFinder.utils.LocationGetter;
 import com.HossamHazem.DishFinder.utils.Place;
-import com.HossamHazem.DishFinder.utils.DataLoader;
+import com.HossamHazem.DishFinder.widget.HomeWidgetProvider;
 
 import java.util.ArrayList;
 
 import butterknife.BindBool;
 import butterknife.ButterKnife;
-
-import com.HossamHazem.DishFinder.layout.MainFragment;
-import com.HossamHazem.DishFinder.layout.PlaceDetailFragment;
-import com.HossamHazem.DishFinder.layout.PlaceListFragment;
-import com.HossamHazem.DishFinder.widget.HomeWidgetProvider;
 
 public class MainActivity extends PlaceParentActivity implements PlaceListFragment.TwoPaneInterface {
 
@@ -45,9 +44,8 @@ public class MainActivity extends PlaceParentActivity implements PlaceListFragme
     @Override
     protected void onStart() {
         super.onStart();
-       // mainFragment.reloadLists(allPlaces, favoritePlaces);
+        // mainFragment.reloadLists(allPlaces, favoritePlaces);
     }
-
 
 
     @Override
@@ -94,7 +92,6 @@ public class MainActivity extends PlaceParentActivity implements PlaceListFragme
 
 
     }
-
 
 
     @Override
@@ -214,7 +211,7 @@ public class MainActivity extends PlaceParentActivity implements PlaceListFragme
                 loadPlacesBundle.putString("location", locationString);
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
                 int searchRadius = prefs.getInt(getString(R.string.searchRadius), 1) * 1000;
-                loadPlacesBundle.putString("radius", searchRadius+"");
+                loadPlacesBundle.putString("radius", searchRadius + "");
                 dataLoader.loadPlacesApi(loadPlacesBundle, new DataLoader.ApiLoaderFinishedCallback() {
                     @Override
                     public void onSuccess(ArrayList<Place> data) {
@@ -230,7 +227,7 @@ public class MainActivity extends PlaceParentActivity implements PlaceListFragme
 
                     }
                 });
-                //updateWidget();
+                updateWidget();
             }
 
             @Override

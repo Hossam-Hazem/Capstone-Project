@@ -3,9 +3,8 @@ package com.HossamHazem.DishFinder;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.HossamHazem.DishFinder.utils.Place;
-
 import com.HossamHazem.DishFinder.layout.PlaceDetailFragment;
+import com.HossamHazem.DishFinder.utils.Place;
 
 public class PlaceDetailActivity extends PlaceParentActivity {
 
@@ -19,14 +18,13 @@ public class PlaceDetailActivity extends PlaceParentActivity {
         setContentView(R.layout.activity_place_detail);
 
 
-
         Intent intent = getIntent();
         place = (Place) intent.getSerializableExtra(PLACE_SERIALIZABLE_KEY);
 
         if (savedInstanceState == null) {
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.place_detail_container, PlaceDetailFragment.newFragmentWithBundle(place,false))
+                    .add(R.id.place_detail_container, PlaceDetailFragment.newFragmentWithBundle(place, false))
                     .commit();
         }
 
