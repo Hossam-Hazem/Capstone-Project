@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        main {
+            keyAlias 'alias'
+            keyPassword 'password'
+            storeFile file('keystore.jks')
+            storePassword 'password'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion '25.0.3'
-
     defaultConfig {
         applicationId "com.HossamHazem.DishFinder"
         minSdkVersion 15
@@ -20,7 +27,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile "com.android.support:appcompat-v7:$androidSupportVersion"
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
