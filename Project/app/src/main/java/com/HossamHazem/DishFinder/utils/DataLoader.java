@@ -44,6 +44,7 @@ public class DataLoader implements Serializable {
 
     public interface ApiLoaderFinishedCallback {
         void onSuccess(ArrayList<Place> data);
+        void onFail();
     }
 
     public interface DatabaseLoaderFinishedCallback {
@@ -93,6 +94,9 @@ public class DataLoader implements Serializable {
 
         @Override
         public void onLoadFinished(Loader<String> loader, String data) {
+            if(places == null){
+                mApiLoaderFinishedCallback.onFail();
+            }
             places = getPlaceDataFromJson(data);
             mApiLoaderFinishedCallback.onSuccess(places);
 
@@ -155,8 +159,10 @@ public class DataLoader implements Serializable {
         LoaderManager loaderManager = mContext.getSupportLoaderManager();
         Loader<String> allPlacesLoader = loaderManager.getLoader(GET_ALL_PLACES_LOADER);
 
-        if (allPlacesLoader == null) {
+        if (allPlacesLoader == null || allPlacesLoader.isReset()) {
             loaderManager.initLoader(GET_ALL_PLACES_LOADER, args, apiLoaderListener);
+        } else {
+            loaderManager.restartLoader(GET_ALL_PLACES_LOADER, args, apiLoaderListener);
         }
     }
 

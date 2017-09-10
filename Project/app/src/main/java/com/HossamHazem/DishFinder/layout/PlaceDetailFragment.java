@@ -28,6 +28,7 @@ import com.HossamHazem.DishFinder.MainActivity;
 import com.HossamHazem.DishFinder.PlaceDetailsConnector;
 import com.HossamHazem.DishFinder.PlaceParentActivity;
 import com.HossamHazem.DishFinder.R;
+import com.HossamHazem.DishFinder.utils.OnCreateViewCommand;
 import com.HossamHazem.DishFinder.utils.PaletteUtils;
 import com.HossamHazem.DishFinder.utils.Place;
 import com.squareup.picasso.Callback;
@@ -145,9 +146,7 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
         mBackdrop.setOnClickListener(this);
         mMap.setOnClickListener(this);
 
-        for (OnCreateViewCommand command : onCreateViewCommands) {
-            command.run();
-        }
+        OnCreateViewCommand.execute(onCreateViewCommands);
 
         return fragmentView;
     }
@@ -406,10 +405,6 @@ public class PlaceDetailFragment extends Fragment implements View.OnClickListene
         bundle.putSerializable(PLACE_SERIALIZABLE_KEY, place);
         fragment.setArguments(bundle);
         return fragment;
-    }
-
-    interface OnCreateViewCommand {
-        void run();
     }
 
 }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.HossamHazem.DishFinder.PlaceParentActivity;
 import com.HossamHazem.DishFinder.R;
+import com.HossamHazem.DishFinder.utils.OnCreateViewCommand;
 import com.HossamHazem.DishFinder.utils.Place;
 
 import java.util.ArrayList;
@@ -23,8 +24,9 @@ public class MainFragment extends Fragment {
     TabAdapter tabAdapter;
     ArrayList<Place> allPlaces;
     ArrayList<Place> favoritePlaces;
-    Fragment allPlacesFragment;
-    Fragment favoritesFragment;
+    PlaceListFragment allPlacesFragment;
+    PlaceListFragment favoritesFragment;
+    ArrayList<OnCreateViewCommand> onCreateViewCommands = new ArrayList<>();
 
     public MainFragment() {
         // Required empty public constructor
@@ -68,7 +70,7 @@ public class MainFragment extends Fragment {
         TabLayout tabLayout = (TabLayout) fragmentView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-
+        OnCreateViewCommand.execute(onCreateViewCommands);
         return fragmentView;
     }
 
@@ -87,27 +89,97 @@ public class MainFragment extends Fragment {
     }
 
     public void removeFavoriteFromAdapter(Place item) {
-        ((PlaceListFragment) tabAdapter.getItem(1)).removeItem(item);
+        favoritesFragment.removeItem(item);
 
     }
 
     public void addFavoriteToAdapter(Place item) {
-        ((PlaceListFragment) tabAdapter.getItem(1)).addItem(item);
+        favoritesFragment.addItem(item);
     }
 
     public void notifyAllPlacesSetChanged() {
-        ((PlaceListFragment) tabAdapter.getItem(0)).notifyDataSetChanged();
+        allPlacesFragment.notifyDataSetChanged();
     }
 
     public void notifyFavoritesSetChanged() {
-        ((PlaceListFragment) tabAdapter.getItem(1)).notifyDataSetChanged();
+        favoritesFragment.notifyDataSetChanged();
     }
 
     public void reloadLists(ArrayList<Place> allPlaces, ArrayList<Place> favoritePlaces) {
         this.allPlaces = allPlaces;
-        ((PlaceListFragment) tabAdapter.getItem(0)).reloadList(allPlaces);
+        allPlacesFragment.reloadList(allPlaces);
         this.favoritePlaces = favoritePlaces;
-        ((PlaceListFragment) tabAdapter.getItem(1)).reloadList(favoritePlaces);
+        favoritesFragment.reloadList(favoritePlaces);
+    }
+
+    public void isApiLoading(final boolean flag){
+        final OnCreateViewCommand onCreateViewCommand = new OnCreateViewCommand() {
+            @Override
+            public void run() {
+                allPlacesFragment.isDataLoading(flag);
+            }
+        };
+        if(allPlacesFragment == null){
+            /*
+                soo if the allPlacesFragment is null when it is initialized add that command
+                to the allPlacesFragment command queue until its view is created.
+                sorry about this Russian doll if you have a better option please suggest.
+             */
+            addOnCreateViewCommand(new OnCreateViewCommand() {
+                @Override
+                public void run() {
+                    allPlacesFragment.addOnCreateViewCommand(onCreateViewCommand);
+                }
+            });
+            return;
+        }
+        if(allPlacesFragment.getView() == null) {
+            allPlacesFragment.addOnCreateViewCommand(onCreateViewCommand);
+            return;
+        }
+        allPlacesFragment.isDataLoading(flag);
+    }
+
+    public void isFavoritesLoading(final boolean flag){
+        final OnCreateViewCommand onCreateViewCommand = new OnCreateViewCommand() {
+            @Override
+            public void run() {
+                favoritesFragment.isDataLoading(flag);
+            }
+        };
+        if(favoritesFragment == null){
+            addOnCreateViewCommand(new OnCreateViewCommand() {
+                @Override
+                public void run() {
+                    favoritesFragment.addOnCreateViewCommand(onCreateViewCommand);
+                }
+            });
+            return;
+        }
+        if(favoritesFragment.getView() == null) {
+            favoritesFragment.addOnCreateViewCommand(onCreateViewCommand);
+            return;
+        }
+        favoritesFragment.isDataLoading(flag);
+    }
+
+    public boolean isApiLoading(){
+        if(allPlacesFragment == null || allPlacesFragment.getView() == null){
+            return false;
+        }
+        return allPlacesFragment.isDataLoading();
+    }
+
+    public boolean isFavoritesLoading(){
+        if(favoritesFragment == null || favoritesFragment.getView() == null){
+            return false;
+        }
+        return favoritesFragment.isDataLoading();
+    }
+
+
+    public void addOnCreateViewCommand(OnCreateViewCommand onCreateViewCommand){
+        onCreateViewCommands.add(onCreateViewCommand);
     }
 
     static class TabAdapter extends FragmentPagerAdapter {

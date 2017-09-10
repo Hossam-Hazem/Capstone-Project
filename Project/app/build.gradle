@@ -5,7 +5,7 @@ android {
         main {
             keyAlias 'alias'
             keyPassword 'password'
-            storeFile file('keystore.jks')
+            storeFile file('../keystore.jks')
             storePassword 'password'
         }
     }
@@ -22,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.main
         }
     }
 }

@@ -70,25 +70,19 @@ public class MainActivity extends PlaceParentActivity implements PlaceListFragme
             }
         }
         dataLoader = DataLoader.getInstance(this);
-        dataLoader.loadPlacesFavorites(new DataLoader.DatabaseLoaderFinishedCallback() {
-            @Override
-            public void onSuccess(ArrayList<Place> data) {
-                favoritePlaces.clear();
-                favoritePlaces.addAll(data);
-                mainFragment.notifyFavoritesSetChanged();
-            }
-        });
+
         if (savedInstanceState == null) {
-            initLocationGetterAndLoadData(dataLoader);
             mainFragment = MainFragment.newInstance(allPlaces, favoritePlaces);
+            initLocationGetterAndLoadData(dataLoader);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.mainFragment, mainFragment, "mainFragment")
+                    .add(R.id.mainFragment, mainFragment, "mainFragment")
                     .commit();
         } else {
             allPlaces = (ArrayList<Place>) savedInstanceState.getSerializable("allPlaces");
             mainFragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.mainFragment);
             mainFragment.reloadLists(allPlaces, favoritePlaces);
         }
+        loadFavorites();
 
 
     }
@@ -193,15 +187,23 @@ public class MainActivity extends PlaceParentActivity implements PlaceListFragme
         }
     }
 
-    private DataLoader initDataLoader() {
-        return new DataLoader(this);
+    public void refreshApiData(){
+        initLocationGetterAndLoadData(dataLoader);
     }
 
+    public void refreshFavoritesData(){
+        loadFavorites();
+    }
+
+    public void refreshData(){
+        refreshApiData();
+        refreshFavoritesData();
+    }
 
     private void initLocationGetterAndLoadData(final DataLoader dataLoader) {
+        mainFragment.isApiLoading(true);
         locationGetter = new LocationGetter(this);
-
-        locationGetter.run(new LocationGetter.LocationCallback() {
+        LocationGetter.LocationCallback locationCallback= new LocationGetter.LocationCallback() {
 
             @Override
             public void onSuccess(Context context, Location location) {
@@ -212,7 +214,7 @@ public class MainActivity extends PlaceParentActivity implements PlaceListFragme
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
                 int searchRadius = prefs.getInt(getString(R.string.searchRadius), 1) * 1000;
                 loadPlacesBundle.putString("radius", searchRadius + "");
-                dataLoader.loadPlacesApi(loadPlacesBundle, new DataLoader.ApiLoaderFinishedCallback() {
+                DataLoader.ApiLoaderFinishedCallback apiLoaderFinishedCallback = new DataLoader.ApiLoaderFinishedCallback() {
                     @Override
                     public void onSuccess(ArrayList<Place> data) {
                         allPlaces.clear();
@@ -224,20 +226,43 @@ public class MainActivity extends PlaceParentActivity implements PlaceListFragme
                             fragment = null;
                             placeDetailFragment.setPlaceDetails(allPlaces.get(0));
                         }
+                        mainFragment.isApiLoading(false);
 
                     }
-                });
+
+                    @Override
+                    public void onFail() {
+                        mainFragment.isApiLoading(false);
+                    }
+                };
+                dataLoader.loadPlacesApi(loadPlacesBundle, apiLoaderFinishedCallback);
                 updateWidget();
             }
 
             @Override
             public void onFail() {
                 Log.v("location", "failed");
+                mainFragment.isApiLoading(false);
             }
 
             @Override
             public void onPermissionRejected() {
                 Log.v("location", "rejected");
+                mainFragment.isApiLoading(false);
+            }
+        };
+        locationGetter.run(locationCallback);
+    }
+
+    public void loadFavorites(){
+        mainFragment.isFavoritesLoading(true);
+        dataLoader.loadPlacesFavorites(new DataLoader.DatabaseLoaderFinishedCallback() {
+            @Override
+            public void onSuccess(ArrayList<Place> data) {
+                favoritePlaces.clear();
+                favoritePlaces.addAll(data);
+                mainFragment.notifyFavoritesSetChanged();
+                mainFragment.isFavoritesLoading(false);
             }
         });
     }

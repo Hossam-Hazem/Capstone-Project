@@ -7,16 +7,20 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.HossamHazem.DishFinder.MainActivity;
 import com.HossamHazem.DishFinder.R;
 import com.HossamHazem.DishFinder.adapters.PlacesListAdapter;
+import com.HossamHazem.DishFinder.utils.OnCreateViewCommand;
 import com.HossamHazem.DishFinder.utils.Place;
 
 import java.util.ArrayList;
@@ -35,11 +39,16 @@ public class PlaceListFragment extends Fragment {
     @BindBool(R.bool.isTablet)
     boolean mTwoPane;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
     private PlacesListAdapter mAdapter;
     protected OnFinishAdapterEmpty onFinishAdapterEmpty;
     ArrayList<Place> places;
     private RecyclerView.LayoutManager mLayoutManager;
     private Place.SortType sortType;
+
+    ArrayList<OnCreateViewCommand> onCreateViewCommands = new ArrayList<>();
 
 
     @Nullable
@@ -63,7 +72,31 @@ public class PlaceListFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        mSwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        Log.i("REFRESH", "onRefresh called from SwipeRefreshLayout");
+
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        ((MainActivity) getActivity()).refreshData();
+                    }
+                }
+        );
+
+        OnCreateViewCommand.execute(onCreateViewCommands);
+
         return view;
+    }
+
+    public void isDataLoading(boolean flag){
+        mSwipeRefreshLayout.setRefreshing(flag);
+    }
+
+    public boolean isDataLoading(){
+        boolean flag = mSwipeRefreshLayout.isRefreshing();
+        return flag;
     }
 
     @Override
@@ -145,4 +178,7 @@ public class PlaceListFragment extends Fragment {
         mAdapter.remove(place);
     }
 
+    public void addOnCreateViewCommand(OnCreateViewCommand onCreateViewCommand){
+        onCreateViewCommands.add(onCreateViewCommand);
+    }
 }
