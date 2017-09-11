@@ -5,6 +5,11 @@ import android.os.Bundle;
 
 import com.HossamHazem.DishFinder.layout.PlaceDetailFragment;
 import com.HossamHazem.DishFinder.utils.Place;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class PlaceDetailActivity extends PlaceParentActivity {
 

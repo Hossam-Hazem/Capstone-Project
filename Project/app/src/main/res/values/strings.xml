@@ -26,7 +26,9 @@
     <string name="favorite_button_content_description">favorite button</string>
     <string name="no_reviews_available">No reviews available</string>
     <string name="reviews_title">Reviews</string>
-    <string name="reviews_close_button">Close</string>
+    <string name="close_button">Close</string>
     <string name="need_network_details">You need network to get complete place info</string>
     <string name="need_network_main">You need network to search for places</string>
+    <string name="open_on_maps">Open on Maps</string>
+    <string name="show_on_maps_text">Show on Maps</string>
 </resources>

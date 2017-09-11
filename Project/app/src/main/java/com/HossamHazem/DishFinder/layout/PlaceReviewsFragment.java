@@ -64,7 +64,7 @@ public class PlaceReviewsFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getActivity(), R.style.AppTheme));
         builder
                 .setTitle(R.string.reviews_title)
-                .setPositiveButton(R.string.reviews_close_button, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.close_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
