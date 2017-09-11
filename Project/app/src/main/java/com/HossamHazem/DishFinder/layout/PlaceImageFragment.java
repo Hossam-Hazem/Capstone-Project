@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import com.HossamHazem.DishFinder.R;
 import com.squareup.picasso.Picasso;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class PlaceImageFragment extends DialogFragment {
     public PlaceImageFragment() {
         // Required empty public constructor
@@ -37,10 +40,16 @@ public class PlaceImageFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_place_image, container, false);
+        ButterKnife.bind(this, view);
         String uri = getArguments().getString("uri");
         ImageView imageView = ((ImageView) view.findViewById(R.id.place_image_view));
         Picasso.with(getContext()).load(uri).into(imageView);
 
         return view;
+    }
+
+    @OnClick(R.id.closeButton)
+    public void close(View view) {
+        getDialog().dismiss();
     }
 }

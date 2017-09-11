@@ -281,7 +281,6 @@ public class Place implements Serializable {
 
     public String getDistanceFormatted(float lat, float lng) {
         double distance = getDistance(lat, lng);
-        String distanceFormatted;
         if (distance < 100) {
             NumberFormat formatter = new DecimalFormat("#0");
             return formatter.format(distance) + " meters";

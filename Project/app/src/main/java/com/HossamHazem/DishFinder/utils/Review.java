@@ -34,7 +34,7 @@ public class Review implements Serializable {
     public String getTime() {
         long timestamp = Long.parseLong(time) * 1000;
         try {
-            DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+            DateFormat sdf = SimpleDateFormat.getDateTimeInstance();
             Date netDate = (new Date(timestamp));
             return sdf.format(netDate);
         } catch (Exception ex) {

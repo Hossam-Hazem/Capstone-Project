@@ -15,7 +15,7 @@ public class MyConnection {
     public static String connect(String uriString) {
         String resultJSONString;
         HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
+        BufferedReader reader;
         URL url = null;
         InputStream inputStream = null;
         try {
@@ -37,7 +37,7 @@ public class MyConnection {
 
         // Read the input stream into a String
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         if (inputStream == null) {
             // Nothing to do.
             return null;

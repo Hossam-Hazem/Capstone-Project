@@ -31,4 +31,5 @@
     <string name="need_network_main">You need network to search for places</string>
     <string name="open_on_maps">Open on Maps</string>
     <string name="show_on_maps_text">Show on Maps</string>
+    <string name="settings_label">Settings</string>
 </resources>
